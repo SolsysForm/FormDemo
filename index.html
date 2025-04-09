@@ -169,7 +169,8 @@
              valid = Lastname && Firstname && phone.match(/^[0-9]{10}$/) && emailValid;
 
             if (valid) {
-                const url = `http://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&mobile=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&postalcode=99999&optInSMS=1`;
+                const idmag = 1034;
+                const url = `http://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&idMag=${encodeURIComponent(idmag)}&mobile=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&postalcode=99999&optInSMS=1`;
 
                 // utilisation de l'URL
 
