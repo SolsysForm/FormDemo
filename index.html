@@ -173,11 +173,11 @@
                 const url = `http://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&idMag=${encodeURIComponent(idmag)}&mobile=${encodeURIComponent(phone)}&mail=${encodeURIComponent(email)}&codePostal=99999&optInSMS=1`;
 
                 // utilisation de l'URL
-
                 const iframe = document.createElement("iframe");
                 iframe.style.display = "none";
                 iframe.src = url;
                 document.body.appendChild(iframe);
+                
                 // Affichage du message de confirmation
                  const messageDiv = document.getElementById("confirmationMessage");
                  messageDiv.style.display = "block";
