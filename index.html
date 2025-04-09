@@ -32,7 +32,7 @@
         }
 
         p {
-        line-height: 1.8;
+            line-height: 1.8;
         }
 
         input,
@@ -65,7 +65,7 @@
             width: 100px;
             height: 45px;
             font-size: 1em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .submit-button:hover {
@@ -83,7 +83,7 @@
             width: 100px;
             height: 45px;
             font-size: 1em;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
 
         }
@@ -102,16 +102,22 @@
             color: red;
             font-size: 0.8em;
         }
+        .confirmation {
+            display: none;
+            color: green;
+            font-size: 1em;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
 <body>
-    <img src="https://SolsysForm.github.io/FormDemo/logo_m4.jpg" alt="Mon Logo" >
+    <img src="https://SolsysForm.github.io/FormDemo/logo_m4.jpg" alt="Mon Logo">
     <p style="text-align: center;">
         <span style="font-size: 1.3em;">Bienvenue !</span><br>
         Inscrivez-vous ici pour bénéficier de nos <br> offres exclusives.
     </p>
-    
+
 
     <form id="clientForm">
         <input type="text" id="Lastname" placeholder="NOM *" required>
@@ -131,26 +137,26 @@
             <button type="reset" class="reset-button">Annuler</button>
         </div>
 
+        <div id="confirmationMessage" class="confirmation">
+            Formulaire envoyé avec succès !
+        </div>
+
 
     </form>
 
     <script>
         document.getElementById("clientForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Empêche l'envoi classique du formulaire
+            event.preventDefault();
 
-            // Récupération des valeurs du formulaire
             const Lastname = document.getElementById("Lastname").value.trim();
             const Firstname = document.getElementById("Firstname").value.trim();
             const email = document.getElementById("email").value.trim();
             const phone = document.getElementById("phone").value.trim();
 
-            // Vérification des champs obligatoires
-            let valid = true;
             document.getElementById("LastnameError").textContent = Lastname ? "" : "Nom requis";
             document.getElementById("FirstnameError").textContent = Firstname ? "" : "Prénom requis";
             document.getElementById("phoneError").textContent = phone.match(/^[0-9]{10}$/) ? "" : "Numéro invalide";
 
-            // Vérification de l’email uniquement s'il est renseigné
             let emailValid = true;
             if (email !== "" && !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
                 document.getElementById("emailError").textContent = "Email invalide";
@@ -159,43 +165,31 @@
                 document.getElementById("emailError").textContent = "";
             }
 
-            valid = Lastname && Firstname && phone.match(/^[0-9]{10}$/) && emailValid;
+            const valid = Lastname && Firstname && phone.match(/^[0-9]{10}$/) && emailValid;
 
             if (valid) {
-                //Création de l'URRL avec interpolation des variables
-                const url = `http://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&mobile=${encodeURIComponent(phone)}&optInSMS=1`;
+                const url = `http://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&mobile=${encodeURIComponent(phone)}&email=${encodeURIComponent(email)}&postalcode=99999&optInSMS=1`;
 
-                // Envoi des données au serveur avec fetch
-                fetch( url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        Lastname: Lastname,
-                        Firstname: Firstname,
-                        email: email,
-                        phone: phone,
-                        postalcode: 99999,
-                    })
-                })
-                    .then(response => response.json()) // Convertir la réponse en JSON
-                    .then(data => {
-                        if (data.success) {
-                            alert("Données enregistrées avec succès !");
-                            document.getElementById("clientForm").reset();
-                        } else {
-                            alert("Erreur lors de l'enregistrement des données");
-                        }
-                    })
-                    .catch(error => console.error('Erreur:', error));
+                window.location.href = url;
+                 // Affichage du message de confirmation
+                 const messageDiv = document.getElementById("confirmationMessage");
+                 messageDiv.style.display = "block";
+
+                // Réinitialisation du formulaire après 5 secondes
+                setTimeout(() => {
+                    messageDiv.style.display = "none";
+                    document.getElementById("clientForm").reset();
+                }, 5000);
             }
         });
+
     </script>
+
     <footer style="text-align: center; margin-top: 50px; font-size: 0.7em; color: #555;">
-        <p> Copyright &copy; <a href="https://www.solsys-info.com" target="_blank" style="text-decoration: none;">Solsys</a> 2025.</p>
+        <p> Copyright &copy; <a href="https://www.solsys-info.com" target="_blank"
+                style="text-decoration: none;">Solsys</a> 2025.</p>
     </footer>
-    
+
 </body>
 
 </html>
