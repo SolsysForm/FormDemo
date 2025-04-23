@@ -102,6 +102,7 @@
             color: red;
             font-size: 0.8em;
         }
+
         .confirmation {
             display: none;
             color: green;
@@ -166,29 +167,31 @@
                 document.getElementById("emailError").textContent = "";
             }
 
-             valid = Lastname && Firstname && phone.match(/^[0-9]{10}$/) && emailValid;
+            valid = Lastname && Firstname && phone.match(/^[0-9]{10}$/) && emailValid;
 
             if (valid) {
                 const idmag = 1034;
-                const url = `http://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&idMag=${encodeURIComponent(idmag)}&mobile=${encodeURIComponent(phone)}&mail=${encodeURIComponent(email)}&codePostal=99999&optInSMS=1`;
+                const url = `https://solsysdemoweb.azurewebsites.net/InsertFidelmob.php?nom=${encodeURIComponent(Lastname)}&prenom=${encodeURIComponent(Firstname)}&idMag=${encodeURIComponent(idmag)}&mobile=${encodeURIComponent(phone)}&mail=${encodeURIComponent(email)}&codePostal=99999&optInSMS=1`;
 
-                fetch(url, {
-            method: 'GET',
-            mode: 'no-cors'  // important pour éviter le blocage si le serveur ne gère pas CORS
-        }).then(() => {
-            // Affichage du message de confirmation
-            const messageDiv = document.getElementById("confirmationMessage");
-            messageDiv.style.display = "block";
+                // utilisation de l'URL
 
-            setTimeout(() => {
-                messageDiv.style.display = "none";
-                document.getElementById("clientForm").reset();
-            }, 5000);
-        }).catch(error => {
-            console.error("Erreur lors de l'envoi du formulaire :", error);
+                const iframe = document.createElement("iframe");
+                iframe.style.display = "none";
+                iframe.src = url;
+                document.body.appendChild(iframe);
+                
+                // Affichage du message de confirmation
+                const messageDiv = document.getElementById("confirmationMessage");
+                messageDiv.style.display = "block";
+
+                // Réinitialisation du formulaire après 5 secondes
+                setTimeout(() => {
+                    messageDiv.style.display = "none";
+                    document.getElementById("clientForm").reset();
+                }, 5000);
+            }
         });
-    }
-});
+
     </script>
 
     <footer style="text-align: center; margin-top: 50px; font-size: 0.7em; color: #555;">
